@@ -4,7 +4,7 @@ namespace Core;
 
 use Core\ViewJSON;
 
-/** Error Handler */
+/** Error Handler - f #16 */
 class Error
 {
     /**
