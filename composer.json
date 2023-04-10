@@ -2,5 +2,11 @@
     "require": {
         "vlucas/phpdotenv": "^5.5",
         "google/auth": "^1.26"
+    },
+    "autoload": {
+        "psr-4": {
+            "Core\\": "Core/",
+            "App\\": "App/"
+        }
     }
 }
