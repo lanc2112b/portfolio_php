@@ -82,7 +82,13 @@ class Router
         return false;
     }
 
-
+    /**
+     * Dispatcher: calls specific action in given controller 
+     * if exists
+     *
+     * @param string $url
+     * @return void
+     */
     public function dispatch($url)
     {
         $url = $this->removeQueryStringVariables($url);
@@ -103,12 +109,15 @@ class Router
                 if (preg_match('/action$/i', $action) == 0) {
                     $controller_object->$action();
                 } else {
-                    //throw new \Exception("Method not found or cannot be called directly");
-                    echo "Method $action (in controller $controller) not found";
+                    throw new \Exception("Method $action (in controller $controller) not found");
+                    //echo "Method $action (in controller $controller) not found";
                 }
             } else {
-                echo "Controller class $controller not found";
+                throw new \Exception("Controller class $controller not found");
+                //echo "Controller class $controller not found";
             }
+        } else {
+            throw new \Exception("No route matched", 404);
         }
     }
 
@@ -122,6 +131,12 @@ class Router
         return $this->params;
     }
 
+    /**
+     * getNamespace
+     * return namespace for given controller
+     *
+     * @return string
+     */
     protected function getNamespace()
     {
         $namespace = 'App\Controllers\\';
@@ -156,7 +171,13 @@ class Router
     {
         return lcfirst($this->converToStudlyCaps($str));
     }
-
+    
+    /**
+     * returns url with ? query string removed
+     *
+     * @param string $url
+     * @return string
+     */
     protected function removeQueryStringVariables($url) 
     {
         if ($url !== ''){
