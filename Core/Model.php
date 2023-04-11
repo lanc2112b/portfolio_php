@@ -11,7 +11,7 @@ use PDO;
 abstract class Model
 {
 
-    protected static function getDB()
+    protected function getDB()
     {
         static $db = null;
 
