@@ -6,13 +6,14 @@
     "autoload": {
         "psr-4": {
             "Core\\": "Core/",
-            "App\\": "App/"
+            "App\\": "App/",
+            "db\\": "db/"
         }
     },
     "require-dev": {
         "phpunit/phpunit": "^10"
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit --testsuite "
+        "test": "./vendor/bin/phpunit --bootstrap db/bootstrap.php --testsuite "
     }
 }
