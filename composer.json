@@ -13,6 +13,6 @@
         "phpunit/phpunit": "^10"
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit"
+        "test": "./vendor/bin/phpunit --testsuite "
     }
 }
