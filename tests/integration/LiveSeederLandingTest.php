@@ -43,4 +43,29 @@ class LiveSeederLandingTest extends TestCase
 
     }
 
+    public function testAddPortfolioItems()
+    {
+        $seeder = new LiveSeederLanding;
+
+        $itemsAdded = $seeder->addLandingContent();
+
+        $this->assertEquals(true, $itemsAdded);
+    }
+
+    public function testGetLandingContent()
+    {
+        $seeder = new LiveSeederLanding;
+
+        $items = $seeder->getLandingContent();
+
+        $areaTitle1 = 'main';
+        $areaTitle2 = 'secondary';
+
+        $this->assertIsArray($items);
+        $this->assertEquals(1, $items[0]['id']);
+        $this->assertEquals(2, $items[1]['id']);
+        $this->assertEquals($areaTitle1, $items[0]['area_title']);
+        $this->assertEquals($areaTitle2, $items[1]['area_title']);
+    }
+
 }

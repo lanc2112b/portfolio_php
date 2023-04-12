@@ -54,4 +54,31 @@ class LiveSeederLanding extends Model
         return $results;
     }
 
+    public function addLandingContent()
+    {
+        $db = static::getDB();
+
+        $sql = "INSERT INTO landing_page
+                (area_title, area_content_title, area_content, area_content_image)
+                VALUES
+                ('main', 'Welcome', 'Some test text.', '/placeholder.jpg'),
+                ('secondary', 'Secondary Area', 'Some more text here', '/placeholder.jpg')";
+
+        if ($db->exec($sql)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getLandingContent()
+    {
+        $db = static::getDB();
+
+        $stmt = $db->query("SELECT * FROM landing_page");
+
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
+    }
+
 }
