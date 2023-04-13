@@ -20,7 +20,7 @@ class ApiPostsTest extends TestCase
     public function testGetValidResponse()
     {
         
-        $response = $this->client->request('GET', '/posts/index');
+        $response = $this->client->request('GET', '/api/posts/index');
 
         $this->assertEquals(200, $response->getStatusCode());
 
