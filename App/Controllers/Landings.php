@@ -22,4 +22,13 @@ class Landings extends Controller
         $this->mdl = new Landing($data ?? []);
     }
     
+    public function getIndexAction()
+    {
+        $results = $this->mdl->getAll();
+
+        if (!$results)
+            throw new \Exception('No items found', 404);
+
+        ViewJSON::responseJson($results);
+    }
 }

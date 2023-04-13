@@ -21,4 +21,17 @@ class Landing extends \Core\Model
         };
     }
 
+    public function getAll()
+    {
+
+        $sql = "SELECT * 
+                FROM landing_page";
+
+        $db = static::getDB();
+
+        $stmt = $db->query($sql);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
