@@ -86,7 +86,7 @@ class WaitApiPortfolioTest extends TestCase
     public function testPostPortfolioItem()
     {
 
-        $response = $this->client->request('POST', '/api/portfolios/add',
+        $response = $this->client->request('POST', '/api/admin/portfolios/add',
             ['body' => json_encode($this->post_data)]);
 
         $this->assertEquals(201, $response->getStatusCode());
@@ -109,7 +109,7 @@ class WaitApiPortfolioTest extends TestCase
     public function testPostBadPortfolioItem()
     {
 
-        $response = $this->client->request('POST', '/api/portfolios/add',['http_errors' => false],['body' => json_encode(['title' => 'sdfsdf' ])],
+        $response = $this->client->request('POST', '/api/admin/portfolios/add',['http_errors' => false],['body' => json_encode(['title' => 'sdfsdf' ])],
             
         );
 
@@ -126,7 +126,7 @@ class WaitApiPortfolioTest extends TestCase
 
         $response = $this->client->request(
             'PATCH',
-            '/api/portfolios/3/update',
+            '/api/admin/portfolios/3/update',
             ['body' => json_encode($this->patch_data)]
         );
 
@@ -163,7 +163,7 @@ class WaitApiPortfolioTest extends TestCase
 
         $response = $this->client->request(
             'DELETE',
-            '/api/portfolios/3/delete',
+            '/api/admin/portfolios/3/delete',
             ['body' => json_encode($this->patch_data)]
         );
 
