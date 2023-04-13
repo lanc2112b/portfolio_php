@@ -11,11 +11,14 @@ class Portfolios extends Controller
 
     protected $mdl;
 
-    public function __construct()
+    protected function before()
     {
-        $this->mdl = new Portfolio();
-    }
 
+        parent::before();
+        
+        $this->mdl = new Portfolio();
+
+    }
     /**
      * getIndexAction
      * 
@@ -28,7 +31,21 @@ class Portfolios extends Controller
     public function getIndexAction()
     {
         $results = $this->mdl->getAll();
-        ViewJSON::responseJson($results);
+
+        $status = ($results) ? 200 : 404;
+
+        ViewJSON::responseJson($results ?: 'No items found', $status);
+    }
+
+    public function getViewAction()
+    {
+        $id = $this->route_params['id'];
+        
+        $result = $this->mdl->getItembyID($id);
+
+        $status = ($result) ? 200 : 404;
+
+        ViewJSON::responseJson(['item' => $result ?: 'No item found'], $status);
     }
 
 }
