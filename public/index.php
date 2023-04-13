@@ -28,5 +28,7 @@ $router->add('api/{controller}/{id:\d+}/{action}');
 $router->add('api/admin/{controller}/{action}', ['namespace' => 'Admin']);
 $router->add('api/admin/{controller}/{id:\d+}/{action}', ['namespace' => 'Admin']);
 
-$router->dispatch($_SERVER['QUERY_STRING']);
+
+
+$router->dispatch($_SERVER['QUERY_STRING'], $_SERVER['REQUEST_METHOD']);
 
