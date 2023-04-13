@@ -28,7 +28,7 @@ class Home extends \Core\Controller
      *
      * @return void
      */
-    public function indexAction()
+    public function getIndexAction()
     {
         /** return api running, try:  */
         //echo "Hello from the home controller";
