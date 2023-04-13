@@ -35,4 +35,31 @@ class ApiPortfolioTest extends TestCase
         $this->assertEquals(1, $data[0]['id']);
         $this->assertEquals(2, $data[1]['id']);
     }
+
+    public function testGetPortfolioItemById()
+    {
+
+        $response = $this->client->request('GET', '/api/portfolios/1/view');
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $data = json_decode($response->getBody(), true);
+
+        $this->assertIsArray($data);
+        $this->assertCount(1, $data);
+    }
+
+    public function testGetPortfolioItemByInvalidId()
+    {
+
+        $response = $this->client->request('GET','/api/portfolios/4/view', ['http_errors' => false]);
+
+        $this->assertEquals(404, $response->getStatusCode());
+
+        $data = json_decode($response->getBody(), true);
+
+        $this->assertIsArray($data);
+        $this->assertCount(1, $data);
+        $this->assertEquals('No item found', $data['item']);
+    }
 }
