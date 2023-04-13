@@ -14,7 +14,7 @@ class Posts extends \Core\Controller
      *
      * @return void
      */
-    public function indexAction()
+    public function getIndexAction()
     {   
         $posts = Post::getAll();
         ViewJSON::responseJson($posts);

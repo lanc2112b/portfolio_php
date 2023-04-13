@@ -89,10 +89,14 @@ class Router
      * @param string $url
      * @return void
      */
-    public function dispatch($url)
+    public function dispatch($url, $request_method)
     {
         $url = $this->removeQueryStringVariables($url);
         
+        //var_dump($request_method);
+        $request_method = strtolower($request_method);
+        //var_dump($request_method);
+
         if ($this->match($url)) {
             $controller = $this->params['controller'];
             $controller = $this->converToStudlyCaps($controller);
@@ -102,8 +106,10 @@ class Router
             if (class_exists($controller)) {
                 $controller_object = new $controller($this->params);
 
-                $action = $this->params['action'];
+                $action = $request_method . '-' . $this->params['action'];
+                //var_dump($action);
                 $action = $this->convertToCamelCase($action);
+                //var_dump($action);
 
                 //if (is_callable([$controller_object, $action])) {
                 if (preg_match('/action$/i', $action) == 0) {
