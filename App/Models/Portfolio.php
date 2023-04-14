@@ -124,7 +124,7 @@ class Portfolio extends \Core\Model
         }
 
         if (!$this->getItemByID($id)) {
-            $this->errors[] = 'Id MUST be a number.';
+            $this->errors[] = 'Item does not exist';
         }
 
         if (empty($this->errors)) {
