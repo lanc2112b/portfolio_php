@@ -24,10 +24,11 @@ class LiveSeederUser extends Model
 
         $sql = "CREATE TABLE IF NOT EXISTS users(
             id INT AUTO_INCREMENT PRIMARY KEY,
-            gid INT NOT NULL DEFAULT 0,
+            gid VARCHAR(32) NOT NULL,
             is_admin TINYINT(1) NOT NULL DEFAULT 0,
             first_name VARCHAR(50) NOT NULL,
             last_name VARCHAR(50) NOT NULL,
+            email TINYTEXT NOT NULL,
             photo_url TINYTEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
