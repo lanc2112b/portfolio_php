@@ -23,10 +23,22 @@ class Users extends Controller
         $this->mdl = new User($data ?? []);
     }
 
+    // /api/users/register
     public function postRegisterAction() 
     {
 
+        $result = $this->mdl->createUser();
 
+        if(!$result)
+            throw new \Exception('Something went wrong', 400);
+
+        if(array_key_exists('msg',$result ) && $result['msg'] === 'User already exists')
+            throw new \Exception($result['msg'], 409);
+
+        if (array_key_exists('msg', $result) && $result['msg'] === 'Invalid token or user')
+            throw new \Exception($result['msg'], 400);
+
+        ViewJSON::responseJson($result, 200);
 
     }
 }
