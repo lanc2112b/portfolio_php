@@ -38,7 +38,25 @@ class Users extends Controller
         if (array_key_exists('msg', $result) && $result['msg'] === 'Invalid token or user')
             throw new \Exception($result['msg'], 400);
 
-        ViewJSON::responseJson($result, 200);
+        ViewJSON::responseJson(['user' => $result], 200);
 
+    }
+
+    // /api/users/login
+    public function postLoginAction()
+    {
+
+        $result = $this->mdl->validateUserLogin();
+
+        if (!$result)
+            throw new \Exception('Something went wrong', 400);
+
+        if (array_key_exists('msg', $result) && $result['msg'] === 'User not found')
+        throw new \Exception($result['msg'], 404);
+
+        if (array_key_exists('msg', $result) && $result['msg'] === 'Invalid token or user')
+        throw new \Exception($result['msg'], 400);
+
+        ViewJSON::responseJson(['user' => $result], 200);
     }
 }
