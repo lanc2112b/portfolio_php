@@ -52,12 +52,32 @@ class User extends Model
         if(!$validUser)
             return ['msg' => 'User not found'];
 
-        if($validUser['refresh_at'] <= date("Y-m-d H:i:s", $this->payload['exp'])) {
+        if($validUser['refresh_at'] <= date("Y-m-d H:i:s")) {
             // update user
             $this->updateUser();
         }
 
         return $this->getUserByGoogleID();
+    }
+
+    public function validateAuthorisedUser()
+    {
+        if (!$this->verifyToken())
+            return ['msg' => 'Invalid token or user'];
+
+        $validUser = $this->getUserPermsByGoogleID();
+        if (!$validUser)
+            return ['msg' => 'User not found'];
+
+        if(!$validUser['is_admin'])
+            return ['msg' => 'Unauthorised user'];
+
+        //$str = $validUser['refresh_at'] . " vs. " . date('Y-m-d H:i:s');
+        if ($validUser['refresh_at'] <= date("Y-m-d H:i:s"))
+            return ['msg' => "Token expired"];
+
+        return ['msg' => true];
+
     }
 
     private function verifyToken()
@@ -77,6 +97,27 @@ class User extends Model
 
   
         $sql = "SELECT gid, first_name, last_name, email, photo_url, access_token, refresh_at 
+                FROM users 
+                WHERE gid = :gid";
+
+        $db = static::getDB();
+
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindParam(':gid', $gid, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    private function getUserPermsByGoogleID()
+    {
+
+        $gid = $this->payload['sub'];
+
+
+        $sql = "SELECT is_admin, refresh_at 
                 FROM users 
                 WHERE gid = :gid";
 
