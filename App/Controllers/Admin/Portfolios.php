@@ -2,11 +2,12 @@
 
 namespace App\Controllers\Admin;
 
-use Core\Controller;
+//use Core\Controller;
+use App\Controllers\Authenticated;
 use App\Models\Portfolio;
 use Core\ViewJSON;
 
-class Portfolios extends Controller
+class Portfolios extends Authenticated
 {
     protected $mdl;
 
