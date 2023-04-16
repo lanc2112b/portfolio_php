@@ -43,6 +43,23 @@ class User extends Model
         return [];
     }
 
+    public function validateUserLogin()
+    {
+        if (!$this->verifyToken())
+            return ['msg' => 'Invalid token or user'];
+
+        $validUser = $this->getUserByGoogleID();
+        if(!$validUser)
+            return ['msg' => 'User not found'];
+
+        if($validUser['refresh_at'] <= date("Y-m-d H:i:s", $this->payload['exp'])) {
+            // update user
+            $this->updateUser();
+        }
+
+        return $this->getUserByGoogleID();
+    }
+
     private function verifyToken()
     {
         $this->payload = $this->client->verifyIdToken($this->credential);
@@ -59,7 +76,7 @@ class User extends Model
         $gid = $this->payload['sub'];
 
   
-        $sql = "SELECT * 
+        $sql = "SELECT gid, first_name, last_name, email, photo_url, access_token, refresh_at 
                 FROM users 
                 WHERE gid = :gid";
 
@@ -81,10 +98,10 @@ class User extends Model
         //if (empty($this->errors)) {
 
             $sql = 'INSERT INTO users
-                (gid, first_name, last_name, photo_url, email, refresh_at)
+                (gid, first_name, last_name, photo_url, email, access_token, refresh_at)
                 VALUES
-                (:gid, :first_name, :last_name, :photo_url, :email, :refresh_at)
-                RETURNING gid, first_name, last_name, email, photo_url';
+                (:gid, :first_name, :last_name, :photo_url, :email, :access_token, :refresh_at)
+                RETURNING gid, first_name, last_name, email, photo_url, access_token, refresh_at';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -94,13 +111,36 @@ class User extends Model
             $stmt->bindValue(':last_name', $this->payload['family_name'], PDO::PARAM_STR);
             $stmt->bindValue(':photo_url', $this->payload['picture'], PDO::PARAM_STR);
             $stmt->bindValue(':email', $this->payload['email'], PDO::PARAM_STR);
+            $stmt->bindValue(':access_token', $this->credential, PDO::PARAM_STR);
             $stmt->bindValue(':refresh_at', date("Y-m-d H:i:s", $this->payload['exp']), PDO::PARAM_STR);
         
             $stmt->execute();
 
             return $stmt->fetch(PDO::FETCH_ASSOC);
         //}
-        return false;
+        //return false;
+    }
+
+    private function updateUser(){
+
+        $sql = 'UPDATE users
+                SET
+                access_token = :access_token,
+                refresh_at = :refresh_at
+                WHERE 
+                gid = :gid';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':gid', $this->payload['sub'], PDO::PARAM_STR);
+        $stmt->bindValue(':access_token', $this->credential, PDO::PARAM_STR);
+        $stmt->bindValue(':refresh_at', date("Y-m-d H:i:s", $this->payload['exp']), PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+
     }
 
     protected $Json = '{
