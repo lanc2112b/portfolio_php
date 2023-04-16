@@ -2,6 +2,9 @@
 
 namespace Core;
 
+
+use \App\Authenticate;
+
 /** Controller abstract class */
 abstract class Controller{
 
@@ -62,4 +65,21 @@ abstract class Controller{
     {
 
     }
+
+    public function requireLogin()
+    {
+        if(!$user = Authenticate::getUser())
+            throw new \Exception('Not valid user or token expired', 403);
+
+        if(!array_key_exists('msg', $user))
+            throw new \Exception('Token expired or invalid user', 403);
+
+        if ($user['msg'] !== true)
+            throw new \Exception($user['msg'], 403);
+
+        return true;
+        
+        //return false;
+    }
+
 }

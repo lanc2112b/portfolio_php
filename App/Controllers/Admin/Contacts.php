@@ -2,12 +2,14 @@
 
 namespace App\Controllers\Admin;
 
-use Core\Controller;
+//use Core\Controller;
+
+use App\Controllers\Authenticated;
 use App\Models\Contact;
 use Core\ViewJSON;
 
 
-class Contacts extends Controller
+class Contacts extends Authenticated
 {
     
     protected $mdl;

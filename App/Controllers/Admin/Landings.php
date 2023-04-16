@@ -2,11 +2,12 @@
 
 namespace App\Controllers\Admin;
 
-use Core\Controller;
+//use Core\Controller;
+use App\Controllers\Authenticated;
 use App\Models\Landing;
 use Core\ViewJSON;
 
-class Landings extends Controller
+class Landings extends Authenticated
 {
     protected $mdl;
 
