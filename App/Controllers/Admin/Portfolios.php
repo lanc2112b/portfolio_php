@@ -29,7 +29,7 @@ class Portfolios extends Authenticated
         $result = $this->mdl->addItem();
 
         if (!$result)
-            throw new \Exception('Bad request', 400);
+            throw new \Exception('Bad request acpac', 400);
 
         ViewJSON::responseJson(['item' => $result], 201);
     }
