@@ -165,8 +165,10 @@ class Portfolio extends \Core\Model
             $this->errors[] = 'The provided url is not valid for image_url';
         }
 
-        if (!filter_var($this->video_url, FILTER_VALIDATE_URL) || strlen($this->video_url) > 254) {
-            $this->errors[] = 'The provided url is not valid for video_url: ' . $this->video_url;
+        if ($this->video_url) {
+            if (!filter_var($this->video_url, FILTER_VALIDATE_URL) || strlen($this->video_url) > 254) {
+                $this->errors[] = 'The provided url is not valid for video_url: ' . $this->video_url;
+            }
         }
     }
 }
