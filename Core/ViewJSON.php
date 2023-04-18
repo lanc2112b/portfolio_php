@@ -16,7 +16,9 @@ class ViewJSON
         header_remove();
         //header("Access-Control-Allow-Origin: *");  // works
         header("Access-Control-Allow-Origin: http://localhost:3000"); // works
-        header("Access-Control-Allow-Headers: Content-Type");
+        header("Access-Control-Allow-Headers: Content-Type, Authorization");
+        header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PATCH');
+        header('Access-Control-Allow-Credentials: true');
         header('Content-Type: application/json');
         http_response_code($status);
         echo json_encode($response);
