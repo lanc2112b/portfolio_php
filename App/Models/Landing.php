@@ -34,6 +34,20 @@ class Landing extends \Core\Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getLandingContentById($id)
+    {
+        $sql = "SELECT * 
+                FROM landing_page 
+                WHERE id = :id";
+
+        $db = static::getDB();
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function addItem()
     {
         $this->validate();
