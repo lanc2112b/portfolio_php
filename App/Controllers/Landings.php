@@ -37,11 +37,11 @@ class Landings extends Controller
 
         $id = $this->route_params['id'];
 
-        $results = $this->mdl->getLandingContentById($id);
+        $result = $this->mdl->getLandingContentById($id);
 
-        if (!$results)
+        if (!$result)
             throw new \Exception('No items found', 404);
 
-        ViewJSON::responseJson($results);
+        ViewJSON::responseJson(['item' => $result]);
     }
 }
