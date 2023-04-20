@@ -31,4 +31,17 @@ class Landings extends Controller
 
         ViewJSON::responseJson($results);
     }
+
+    public function getViewAction()
+    {
+
+        $id = $this->route_params['id'];
+
+        $results = $this->mdl->getLandingContentById($id);
+
+        if (!$results)
+            throw new \Exception('No items found', 404);
+
+        ViewJSON::responseJson($results);
+    }
 }
