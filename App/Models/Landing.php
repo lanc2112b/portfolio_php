@@ -23,12 +23,12 @@ class Landing extends \Core\Model
 
     public function getAll()
     {
-        
+
         $db = static::getDB();
-        
+
         $sql = "SELECT * 
                 FROM landing_page";
-        
+
         $stmt = $db->query($sql);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -70,7 +70,7 @@ class Landing extends \Core\Model
         }
 
         if (empty($this->errors)) {
-            
+
             $sql = 'UPDATE landing_page
                     SET
                     area_title = :area_title,
@@ -127,12 +127,14 @@ class Landing extends \Core\Model
             $this->errors[] = 'Content title must be over 12 chars & less than 254';
         }
 
-        if ($this->area_content == ''|| strlen($this->area_content) < 20 || strlen($this->area_content) > 3000) {
+        if ($this->area_content == '' || strlen($this->area_content) < 20 || strlen($this->area_content) > 3000) {
             $this->errors[] = 'Content must be over 20 chars & less than 3000';
         }
 
-        if ($this->area_content_image == '' || !filter_var($this->area_content_image, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED) || !getimagesize($this->area_content_image)  || strlen($this->area_content_image) > 254) {
-            $this->errors[] = 'The provided url is not valid for content image';
+        if ($this->area_content_image) {
+            if ($this->area_content_image == '' || !filter_var($this->area_content_image, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED) || !getimagesize($this->area_content_image)  || strlen($this->area_content_image) > 254) {
+                $this->errors[] = 'The provided url is not valid for content image';
+            }
         }
     }
 }
