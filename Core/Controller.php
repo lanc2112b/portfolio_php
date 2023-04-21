@@ -69,13 +69,13 @@ abstract class Controller{
     public function requireLogin()
     {
         if(!$user = Authenticate::getUser())
-            throw new \Exception('Not valid user or token expired', 403);
+            throw new \Exception('Not valid user or token expired', 401);
 
         if(!array_key_exists('msg', $user))
-            throw new \Exception('Token expired or invalid user', 403);
+            throw new \Exception('Token expired or invalid user', 401);
 
         if ($user['msg'] !== true)
-            throw new \Exception($user['msg'], 403);
+            throw new \Exception($user['msg'], 401);
 
         return true;
         
