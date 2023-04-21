@@ -19,6 +19,10 @@ class Authenticate
             throw new \Exception('No token received', 401);
         }
 
+        if($matches && $matches[1] === 'undefined') {
+            throw new \Exception('Invalid token received', 401);
+        }
+
         $mdl = new User(['credential' => $matches[1]]);
 
         // FIXME:
