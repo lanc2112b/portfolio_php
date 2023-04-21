@@ -31,7 +31,7 @@ class Error
      */
     public static function exceptionHandler($exception)
     {
-        $status = $exception->getCode();
+        $status = $exception->getCode() ?? 500;
         /** don't just need 404 or 500, as rest, needs to return correct codes */
         //if ($code != 404)
         
