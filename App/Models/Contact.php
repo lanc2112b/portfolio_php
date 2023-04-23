@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use PDO;
+use GuzzleHttp\Client;
 
 class Contact extends \Core\Model
 {
@@ -15,6 +16,9 @@ class Contact extends \Core\Model
     protected $query;
     protected $source;
     protected $notified;
+    protected $token;
+    protected $clrchck;
+    protected $client;
 
     public function __construct($data = [])
     {
@@ -140,8 +144,25 @@ class Contact extends \Core\Model
     public function validate()
     {
 
-        if ($this->name == '' || strlen($this->name) < 10 || strlen($this->name) > 254
-        ) {
+        if ($this->token == ''){
+            $this->errors[] = 'ReCaptcha token is required';
+        } else {
+            
+            $rc_response = $this->validateReCaptcha();
+            if(!$rc_response['success']){
+                $this->errors[] = 'Invalid ReCaptcha token';
+            }
+
+            if ($rc_response['score'] < 0.3) {
+                $this->errors[] = 'Smells like a bot!';
+            } 
+        }
+
+        if($this->clrchck !== '') {
+            $this->errors[] = 'Bot filled?';
+        }
+
+        if ($this->name == '' || strlen($this->name) < 4 || strlen($this->name) > 254) {
             $this->errors[] = 'A fullname is required, between 10 & 254 chars';
         }
 
@@ -157,9 +178,30 @@ class Contact extends \Core\Model
             $this->errors[] = 'A subject is required, between 10 & 1500 chars';
         }
 
-        if ($this->source == '' || strlen($this->source) < 10  || strlen($this->source) > 254) {
-            $this->errors[] = 'A source is required, between 10 & 254 chars';
+        if ($this->source !== '') {
+            if (strlen($this->source) < 10  || strlen($this->source) > 254) {
+                $this->errors[] = 'A source is required, between 10 & 254 chars';
+            }
         }
+    }
 
+    public function validateReCaptcha()
+    {
+        $post_data = [
+            'secret' => $_ENV['RC_SECRET'],
+            'response' => $this->token
+        ];
+
+        $this->client = new Client([
+            'base_uri' => 'https://www.google.com/',
+        ]);
+
+        $response = $this->client->request(
+            'POST',
+            '/recaptcha/api/siteverify',
+            ['query' => $post_data]
+        );
+
+        return json_decode($response->getBody());
     }
 }
