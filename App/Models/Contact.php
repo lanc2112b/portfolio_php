@@ -68,7 +68,7 @@ class Contact extends \Core\Model
                 (name, email, subject, query, source)
                 VALUES
                 (:name, :email, :subject, :query, :source)
-                RETURNING *';
+                '; //RETURNING *
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);

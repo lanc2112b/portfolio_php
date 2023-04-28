@@ -58,7 +58,7 @@ class Landing extends \Core\Model
                 (area_title, area_content_title, area_content, area_content_image)
                 VALUES
                 (:area_title, :area_content_title, :area_content, :area_content_image)
-                RETURNING *';
+                ';//RETURNING *
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);

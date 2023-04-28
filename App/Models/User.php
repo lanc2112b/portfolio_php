@@ -142,7 +142,7 @@ class User extends Model
                 (gid, first_name, last_name, photo_url, email, access_token, refresh_at)
                 VALUES
                 (:gid, :first_name, :last_name, :photo_url, :email, :access_token, :refresh_at)
-                RETURNING gid, first_name, last_name, email, photo_url, access_token, refresh_at';
+                '; //RETURNING gid, first_name, last_name, email, photo_url, access_token, refresh_at
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -183,23 +183,6 @@ class User extends Model
         return $stmt->fetch(PDO::FETCH_ASSOC);
 
     }
-
-    protected $Json = '{
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
-    }';
 
  /*    public function validate()
     {
