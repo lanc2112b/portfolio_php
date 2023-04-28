@@ -19,6 +19,7 @@ class Contact extends \Core\Model
     protected $token;
     protected $clrchck;
     protected $client;
+    protected $recaptcha_response;
 
     public function __construct($data = [])
     {
@@ -147,14 +148,15 @@ class Contact extends \Core\Model
         if ($this->token == ''){
             $this->errors[] = 'ReCaptcha token is required';
         } else {
-            
-            $rc_response = $this->validateReCaptcha();
-            if(!$rc_response['success']){
-                $this->errors[] = 'Invalid ReCaptcha token';
-            }
 
-            if ($rc_response['score'] < 0.3) {
-                $this->errors[] = 'Smells like a bot!';
+            $this->recaptcha_response = $this->validateReCaptcha();
+
+            if($this->recaptcha_response->success == false){
+                $this->errors[] = 'Invalid ReCaptcha token';
+            }elseif ($this->recaptcha_response->action !== 'contact_form') {
+                $this->errors[] = 'Incorrect source';
+            }elseif ($this->recaptcha_response->score <= 0.3) {
+                $this->errors[] = 'Score too low';
             } 
         }
 
@@ -175,12 +177,12 @@ class Contact extends \Core\Model
         }
 
         if ($this->query == '' || strlen($this->query) < 10 || strlen($this->query) > 1500) {
-            $this->errors[] = 'A subject is required, between 10 & 1500 chars';
+            $this->errors[] = 'A query is required, between 10 & 1500 chars';
         }
 
         if ($this->source !== '') {
             if (strlen($this->source) < 10  || strlen($this->source) > 254) {
-                $this->errors[] = 'A source is required, between 10 & 254 chars';
+                $this->errors[] = 'Source should be between 10 & 254 chars';
             }
         }
     }
