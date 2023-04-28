@@ -60,7 +60,7 @@ class Portfolio extends \Core\Model
                 (title, description, hosted_url, github_url, image_url, video_url)
                 VALUES
                 (:title, :description, :hosted_url, :github_url, :image_url, :video_url)
-                RETURNING *';
+                ';//RETURNING *
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
