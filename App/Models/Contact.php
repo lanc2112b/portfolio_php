@@ -79,9 +79,8 @@ class Contact extends \Core\Model
             $stmt->bindValue(':query', $this->query, PDO::PARAM_STR);
             $stmt->bindValue(':source', $this->source, PDO::PARAM_STR);
 
-            $stmt->execute();
+            return $stmt->execute();
 
-            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
         return false;
     }
@@ -110,9 +109,8 @@ class Contact extends \Core\Model
             $stmt->bindValue(':notified', $this->notified, PDO::PARAM_INT);
 
 
-            $stmt->execute();
+            return $stmt->execute();
 
-            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
         return false;
     }

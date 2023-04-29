@@ -68,9 +68,7 @@ class Landing extends \Core\Model
             $stmt->bindValue(':area_content', $this->area_content, PDO::PARAM_STR);
             $stmt->bindValue(':area_content_image', $this->area_content_image, PDO::PARAM_STR);
 
-            $stmt->execute();
-
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            return $stmt->execute();
         }
         return false;
     }
@@ -102,9 +100,8 @@ class Landing extends \Core\Model
             $stmt->bindValue(':area_content', $this->area_content, PDO::PARAM_STR);
             $stmt->bindValue(':area_content_image', $this->area_content_image, PDO::PARAM_STR);
 
-            $stmt->execute();
+            return $stmt->execute();
 
-            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
         return false;
     }
@@ -146,7 +143,7 @@ class Landing extends \Core\Model
         }
 
         if ($this->area_content_image) {
-            if ($this->area_content_image == '' || !filter_var($this->area_content_image, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED) || !getimagesize($this->area_content_image)  || strlen($this->area_content_image) > 254) {
+            if ($this->area_content_image == '' || !filter_var($this->area_content_image, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED) || strlen($this->area_content_image) > 254) {
                 $this->errors[] = 'The provided url is not valid for content image';
             }
         }
