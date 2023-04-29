@@ -72,9 +72,8 @@ class Portfolio extends \Core\Model
             $stmt->bindValue(':image_url', $this->image_url, PDO::PARAM_STR);
             $stmt->bindValue(':video_url', $this->video_url, PDO::PARAM_STR);
 
-            $stmt->execute();
+            return $stmt->execute();
 
-            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
         return false;
     }
@@ -110,9 +109,8 @@ class Portfolio extends \Core\Model
             $stmt->bindValue(':image_url', $this->image_url, PDO::PARAM_STR);
             $stmt->bindValue(':video_url', $this->video_url, PDO::PARAM_STR);
 
-            $stmt->execute();
+            return $stmt->execute();
 
-            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
         return false;
     }
@@ -145,8 +143,8 @@ class Portfolio extends \Core\Model
     public function validate()
     {
 
-        if ($this->title == '' || strlen($this->title) < 20 || strlen($this->title) > 254) {
-            $this->errors[] = 'A title is required or must be 20 chars or more';
+        if ($this->title == '' || strlen($this->title) < 6 || strlen($this->title) > 254) {
+            $this->errors[] = 'A title is required or must be 6 chars or more';
         }
 
         if ($this->description == '' || strlen($this->description) < 20 || strlen($this->description) > 2000) {
