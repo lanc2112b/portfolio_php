@@ -20,6 +20,7 @@ class ViewJSON
     {
 
         $allowed_hosts = ['https://www.muninn.co.uk', 'https://pap.muninn.co.uk'];
+        //$allowed_hosts = ['https://www.muninn.co.uk', 'https://pap.muninn.co.uk', 'http://localhost:3000'];
 
         $http_origin = '';
 
