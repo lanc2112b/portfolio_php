@@ -147,8 +147,8 @@ class Portfolio extends \Core\Model
             $this->errors[] = 'A title is required or must be 6 chars or more';
         }
 
-        if ($this->description == '' || strlen($this->description) < 20 || strlen($this->description) > 5000) {
-            $this->errors[] = 'A description is required or must be 20 chars and less than 5000';
+        if ($this->description == '' || strlen($this->description) < 20 || strlen($this->description) > 10000) {
+            $this->errors[] = 'A description is required or must be 20 chars and less than 10000';
         }
 
         if ($this->hosted_url == '' || !filter_var($this->hosted_url, FILTER_VALIDATE_URL) || strlen($this->hosted_url) > 254) {
