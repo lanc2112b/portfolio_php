@@ -27,7 +27,8 @@ class Portfolio extends \Core\Model
     {
 
         $sql = "SELECT * 
-                FROM portfolio_items";
+                FROM portfolio_items
+                ORDER BY created_at DESC";
 
         $db = static::getDB();
 
