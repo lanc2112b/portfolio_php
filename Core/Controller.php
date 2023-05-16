@@ -6,7 +6,8 @@ namespace Core;
 use \App\Authenticate;
 
 /** Controller abstract class */
-abstract class Controller{
+abstract class Controller
+{
 
     /**
      * params from matched route
