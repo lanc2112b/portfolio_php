@@ -155,9 +155,9 @@ class User extends Model
             $stmt->bindValue(':access_token', $this->credential, PDO::PARAM_STR);
             $stmt->bindValue(':refresh_at', date("Y-m-d H:i:s", $this->payload['exp']), PDO::PARAM_STR);
         
-            $stmt->execute();
+            return $stmt->execute();
 
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            //return $stmt->fetch(PDO::FETCH_ASSOC);
         //}
         //return false;
     }
