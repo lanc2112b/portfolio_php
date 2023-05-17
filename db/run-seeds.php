@@ -9,10 +9,11 @@ if (!$_ENV['DB_HOST']) {
     die('Env not loaded correctly');
 }
 
-#use db\LiveSeederLanding;
-#use db\LiveSeederContact;
-#use db\LiveSeederPortfolio;
-#use db\LiveSeederUser;
+/** Need to implement db migrations, look at phinx? */
+use db\LiveSeederLanding;
+use db\LiveSeederContact;
+use db\LiveSeederPortfolio;
+use db\LiveSeederUser;
 use db\LiveSeederLogging;
 
 echo "Seeding logging page tables...\n";
@@ -28,56 +29,56 @@ $logging->createLoggingTable();
 echo "Seeded logging page content... \n";
 
 
-#echo "Seeding landing page tables...\n";
+echo "Seeding landing page tables...\n";
 
-#$landing = new LiveSeederLanding();
+$landing = new LiveSeederLanding();
 
-#$landing->dropTable();
+$landing->dropTable();
 
-#$landing->createLandingTable();
+$landing->createLandingTable();
 
-#$landing->addLandingContent();
+$landing->addLandingContent();
 
-#echo "Seeded landing page content... \n";
-
-/** --------------------------------- */
-
-#echo "Seeding portfolio page table...\n";
-
-#$portfolio = new LiveSeederPortfolio();
-
-#$portfolio->dropTable();
-
-#$portfolio->createPortfolioTable();
-
-#$portfolio->addPortfolioItems();
-
-#echo "Seeded portfolio page content... \n";
+echo "Seeded landing page content... \n";
 
 /** --------------------------------- */
 
-#echo "Seeding contact form table...\n";
+echo "Seeding portfolio page table...\n";
 
-#$contact = new LiveSeederContact();
+$portfolio = new LiveSeederPortfolio();
 
-#$contact->dropTable();
+$portfolio->dropTable();
 
-#$contact->createContactTable();
+$portfolio->createPortfolioTable();
 
-#$contact->addContactItems();
+$portfolio->addPortfolioItems();
 
-#echo "Seeded contact form content... \n";
+echo "Seeded portfolio page content... \n";
 
 /** --------------------------------- */
 
-#echo "Creating users table...\n";
+echo "Seeding contact form table...\n";
 
-#$users = new LiveSeederUser();
+$contact = new LiveSeederContact();
 
-#$users->dropTable();
+$contact->dropTable();
 
-#$users->createUsersTable();
+$contact->createContactTable();
 
-#echo "Created users table... \n";
+$contact->addContactItems();
 
-#echo "Done \n\n";
+echo "Seeded contact form content... \n";
+
+/** --------------------------------- */
+
+echo "Creating users table...\n";
+
+$users = new LiveSeederUser();
+
+$users->dropTable();
+
+$users->createUsersTable();
+
+echo "Created users table... \n";
+
+echo "Done \n\n";
