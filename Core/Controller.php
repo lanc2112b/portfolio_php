@@ -4,6 +4,7 @@ namespace Core;
 
 
 use \App\Authenticate;
+use \Core\Logger;
 
 /** Controller abstract class */
 abstract class Controller
@@ -15,6 +16,8 @@ abstract class Controller
      * @var array
      */
     protected $route_params = [];
+
+    protected $log;
 
     /**
      * constructor
@@ -36,10 +39,15 @@ abstract class Controller
      */
     public function __call($name, $args)
     {
+        $this->log = new Logger();
+        
         $method = $name . 'Action';
 
         if (method_exists($this, $method)) {
             if ($this->before() !== false){
+
+                $this->log->addLog(get_class($this), $method, $this->route_params, 'any', 0);
+
                 call_user_func_array([$this, $method], $args);
                 $this->after();
             }
