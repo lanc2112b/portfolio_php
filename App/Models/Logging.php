@@ -29,6 +29,9 @@ class Logging extends Model
     {
         
         $this->address = $_SERVER['REMOTE_ADDR'];
+
+        if ($this->address === $_ENV['FILTER_IP'])
+            return;
        
         $sql = 'INSERT INTO logs 
                 (addr, host, contr, action, params, username, validated)
@@ -47,5 +50,19 @@ class Logging extends Model
         $stmt->bindValue(':validated', $validated, PDO::PARAM_INT);
 
         return $stmt->execute();
+    }
+
+    public function getLogs()
+    {
+        /** add limit, page, filter_by, sort_by, order */
+        $sql = 'SELECT *
+                FROM logs
+                ORDER BY created_at DESC';
+
+        $db = static::getDB();
+
+        $stmt = $db->query($sql);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

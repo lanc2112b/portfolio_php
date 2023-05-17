@@ -15,6 +15,21 @@ phpdotenv
 Google API client  
 PHPUnit 10.x   
 
+.env.example copy to .env 
+```
+DB_HOST='localhost'     ## hostname of server hosting DB
+DB_USER=''              ## username for DB access  
+DB_PASS=''              ## password for DB access
+DB_NAME=''              ## name of DB to access  
+SHOW_ERRORS=false       ## Show errors true / false  - false redirects all errors to a file in logs/
+GOOGLE_CLIENT_ID=''     ## CLient ID for Google GIS
+GOOGLE_CLIENT_SECRET='' ## Secret to validate JWT passed from user / GIS
+RC_SECRET=''            ## ReCaptcha secret
+ALLOWED_HOSTS=''        ## Comma separated list of hosts to allow CORS (admin panel and front end required)
+FILTER_IP=''            ## Filter a specific IP from the logs. 
+```
+
+
 
 Mirrored to GitHub from my Gitea (self hosted) instance.  
 
