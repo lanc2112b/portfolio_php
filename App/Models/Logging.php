@@ -29,6 +29,9 @@ class Logging extends Model
     {
         
         $this->address = $_SERVER['REMOTE_ADDR'];
+
+        if ($this->address === $_ENV['FILTER_IP'])
+            return;
        
         $sql = 'INSERT INTO logs 
                 (addr, host, contr, action, params, username, validated)
