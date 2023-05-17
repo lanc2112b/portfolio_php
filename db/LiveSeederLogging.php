@@ -25,7 +25,7 @@ class LiveSeederLogging extends Model
         $sql = "CREATE TABLE IF NOT EXISTS logs(
             id INT AUTO_INCREMENT PRIMARY KEY,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            addr VARCHAR(15) NOT NULL,
+            addr VARCHAR(39) NOT NULL,
             host TINYTEXT,
             contr TINYTEXT,
             action TINYTEXT,
