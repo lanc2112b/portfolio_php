@@ -48,4 +48,18 @@ class Logging extends Model
 
         return $stmt->execute();
     }
+
+    public function getLogs()
+    {
+        /** add limit, page, filter_by, sort_by, order */
+        $sql = 'SELECT *
+                FROM logs
+                ORDER BY created_at DESC';
+
+        $db = static::getDB();
+
+        $stmt = $db->query($sql);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
