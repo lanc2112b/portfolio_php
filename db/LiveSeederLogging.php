@@ -27,6 +27,7 @@ class LiveSeederLogging extends Model
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             addr VARCHAR(39) NOT NULL,
             host TINYTEXT,
+            refer TINYTEXT,
             contr TINYTEXT,
             action TINYTEXT,
             params TINYTEXT,

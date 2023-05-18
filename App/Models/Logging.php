@@ -25,6 +25,12 @@ class Logging extends Model
         return gethostbyaddr($this->address);
     }
 
+    private function getRef()
+    {
+
+        return $_SERVER['HTTP_REFERER'];
+    }
+
     public function saveLog($contr, $action, $params, $username = 'none', $validated = 0)
     {
         
@@ -34,15 +40,16 @@ class Logging extends Model
             return;
        
         $sql = 'INSERT INTO logs 
-                (addr, host, contr, action, params, username, validated)
+                (addr, host, refer, contr, action, params, username, validated)
                 VALUES
-                (:addr, :host, :contr, :action, :params, :username, :validated)';
+                (:addr, :host, :refer, :contr, :action, :params, :username, :validated)';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
 
         $stmt->bindValue(':addr', $this->address, PDO::PARAM_STR);
         $stmt->bindValue(':host', $this->getHost(), PDO::PARAM_STR);
+        $stmt->bindValue(':refer', $this->getRef() ?? 'none', PDO::PARAM_STR);
         $stmt->bindValue(':contr', $contr, PDO::PARAM_STR);
         $stmt->bindValue(':action', $action, PDO::PARAM_STR);
         $stmt->bindValue(':params', implode(',',$params), PDO::PARAM_STR);
