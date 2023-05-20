@@ -59,17 +59,36 @@ class Logging extends Model
         return $stmt->execute();
     }
 
-    public function getLogs()
+    public function getLogs($limit, $page)
     {
         /** add limit, page, filter_by, sort_by, order */
+        $offset = ($page * $limit) - $limit; 
+
         $sql = 'SELECT *
                 FROM logs
-                ORDER BY created_at DESC';
+                ORDER BY created_at DESC
+                LIMIT :limit
+                OFFSET :offset';
 
         $db = static::getDB();
+        $stmt = $db->prepare($sql);
 
-        $stmt = $db->query($sql);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getLogCount()
+    {
+        $sql = 'SELECT COUNT(*) AS total_rows FROM logs';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     }
 }
