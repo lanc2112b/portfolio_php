@@ -43,7 +43,7 @@ class LiveSeederUserTest extends TestCase
         $this->assertEquals('updated_at', $columns[8]['Field']);
         $this->assertEquals('deleted_at', $columns[9]['Field']);
         $this->assertEquals('refresh_at', $columns[10]['Field']);
-        $this->assertEquals('access_token', $columns[11]['Field']);
+        $this->assertEquals('refresh_token', $columns[11]['Field']);
     }
 
 
