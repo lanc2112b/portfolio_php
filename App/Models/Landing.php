@@ -59,7 +59,7 @@ class Landing extends \Core\Model
                 VALUES
                 (:area_title, :area_content_title, :area_content, :area_content_image)
                 ';//RETURNING *
-
+            
             $db = static::getDB();
             $stmt = $db->prepare($sql);
 
@@ -68,7 +68,17 @@ class Landing extends \Core\Model
             $stmt->bindValue(':area_content', $this->area_content, PDO::PARAM_STR);
             $stmt->bindValue(':area_content_image', $this->area_content_image, PDO::PARAM_STR);
 
-            return $stmt->execute();
+            if ($stmt->execute()) {
+                $last = $db->lastInsertId();
+
+                $returning_sql = 'SELECT * 
+                                  FROM landing_page
+                                  WHERE id = :id';
+                $stmt = $db->prepare($returning_sql);
+                $stmt->bindValue(':id', $last, PDO::PARAM_INT);
+                $stmt->execute();
+                return $stmt->fetch(PDO::FETCH_ASSOC);
+            }
         }
         return false;
     }
