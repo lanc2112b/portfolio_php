@@ -21,8 +21,8 @@ class Tokens
     {
 
         $phrase = ($type === 'access') ? $_ENV['ACCESS_KEY'] : $_ENV['REFRESH_KEY']; 
-        $expires_addition = ($type === 'access') ? 60 * 1 : 60 * 3;
-        //$expires_addition = ($type === 'access') ? 60 * 10 : 24 * (60 * 60);
+        //$expires_addition = ($type === 'access') ? 60 * 1 : 60 * 3;
+        $expires_addition = ($type === 'access') ? 60 * 10 : 24 * (60 * 60);
 
         $this->issued = time();       
         $this->expires = $this->issued + $expires_addition;
