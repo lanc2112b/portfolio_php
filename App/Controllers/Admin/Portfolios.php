@@ -23,6 +23,29 @@ class Portfolios extends Authenticated
         $this->mdl = new Portfolio($data ?? []);
     }
 
+    public function getIndexAction()
+    {
+        $results = $this->mdl->getAll();
+
+        if (!$results)
+            throw new \Exception('No items found', 404);
+
+        ViewJSON::responseJson($results);
+    }
+
+    public function getViewAction()
+    {
+        $id = $this->route_params['id'];
+
+        $result = $this->mdl->getItemByID($id);
+
+        if (!$result)
+            throw new \Exception('No item found', 404);
+
+        ViewJSON::responseJson(['item' => $result]);
+    }
+
+
     public function postAddAction()
     {
 

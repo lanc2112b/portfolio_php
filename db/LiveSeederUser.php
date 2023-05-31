@@ -34,7 +34,7 @@ class LiveSeederUser extends Model
             updated_at TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
             deleted_at TIMESTAMP,
             refresh_at TIMESTAMP,
-            access_token TEXT
+            refresh_token TEXT
             )";
 
         $stmt = $db->query($sql);

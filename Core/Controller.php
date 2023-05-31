@@ -80,13 +80,28 @@ abstract class Controller
         if(!$user = Authenticate::getUser())
             throw new \Exception('Not valid user or token expired', 401);
 
+        if (array_key_exists('msg', $user)) {
+
+            if ($user['msg'] === 'Valid user')
+                return true;
+
+            if ($user['msg'] === 'Expired token')
+                throw new \Exception('Token Expired', 403);
+
+            if ($user['msg'] === 'Invalid token' ||
+                $user['msg'] === 'Unauthorised user')
+                throw new \Exception('Error validating user', 401);
+
+            if ($user['msg'] !== 'Valid user')
+                throw new \Exception('Error validating user', 401);
+
+        }
+
         if(!array_key_exists('msg', $user))
-            throw new \Exception('Token expired or invalid user', 401);
+            throw new \Exception('Error validating user', 401);
 
-        if ($user['msg'] !== true)
-            throw new \Exception($user['msg'], 401);
-
-        return true;
+ 
+        
         
         //return false;
     }
