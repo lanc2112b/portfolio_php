@@ -27,9 +27,11 @@ GOOGLE_CLIENT_SECRET='' ## Secret to validate JWT passed from user / GIS
 RC_SECRET=''            ## ReCaptcha secret
 ALLOWED_HOSTS=''        ## Comma separated list of hosts to allow CORS (admin panel and front end required)
 FILTER_IP=''            ## Filter a specific IP from the logs. 
+DOMAIN=''               ## Domain the API is hosted at - used in JWTs
+AUDIENCE=''             ## Domain the admin app is hosted at - used in JWTs
+ACCESS_KEY=             ## Key used to sign the access token
+REFRESH_KEY=            ## Key used to sign the refresh token
 ```
 
-
-
-Mirrored to GitHub from my Gitea (self hosted) instance.  
+Mirrored to GitHub from my (self hosted) Gitea  instance.  
 
