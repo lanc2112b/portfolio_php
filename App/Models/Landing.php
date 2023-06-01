@@ -21,17 +21,36 @@ class Landing extends \Core\Model
         };
     }
 
-    public function getAll()
+    public function getAll($limit, $page)
     {
 
-        $db = static::getDB();
+        $offset = ($page * $limit) - $limit;
 
         $sql = "SELECT * 
-                FROM landing_page";
+                FROM landing_page
+                ORDER BY created_at DESC
+                LIMIT :limit
+                OFFSET :offset";
 
-        $stmt = $db->query($sql);
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
 
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getRowCount()
+    {
+        $sql = 'SELECT COUNT(*) AS total_rows FROM landing_page';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getLandingContentById($id)

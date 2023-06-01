@@ -23,18 +23,36 @@ class Portfolio extends \Core\Model
         };
     }
 
-    public function getAll()
+    public function getAll($limit, $page)
     {
-
+        $offset = ($page * $limit) - $limit;
+        
         $sql = "SELECT * 
                 FROM portfolio_items
-                ORDER BY created_at DESC";
+                ORDER BY created_at DESC
+                LIMIT :limit
+                OFFSET :offset";
 
         $db = static::getDB();
+        $stmt = $db->prepare($sql);
 
-        $stmt = $db->query($sql);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getRowCount()
+    {
+        $sql = 'SELECT COUNT(*) AS total_rows FROM portfolio_items';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getItemByID($id)
