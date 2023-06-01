@@ -13,6 +13,8 @@ class Contacts extends Authenticated
 {
     
     protected $mdl;
+    protected $page;
+    protected $limit;
 
     protected function before()
     {
@@ -28,12 +30,23 @@ class Contacts extends Authenticated
 
     public function getIndexAction()
     {
-        $results = $this->mdl->getAll();
 
+        if (isset($_GET['page']) && is_numeric($_GET['page']))
+            $this->page = $_GET['page'];
+
+        if (isset($_GET['limit']) && is_numeric($_GET['limit']))
+            $this->limit = $_GET['limit'];
+
+        $count = $this->mdl->getMessageCount();
+
+        $results = $this->mdl->getAll($this->limit ?? 10, $this->page ?? 1);
+        //var_dump($results);
         if (!$results)
             throw new \Exception('No items found', 404);
 
-        ViewJSON::responseJson($results);
+        $data = [$count, $results];
+        
+        ViewJSON::responseJson($data);
     }
 
     public function getViewAction()
