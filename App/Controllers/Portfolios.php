@@ -34,7 +34,7 @@ class Portfolios extends Controller
      */
     public function getIndexAction()
     {
-        $results = $this->mdl->getAll();
+        $results = $this->mdl->getAll(50, 1);
 
         if (!$results)
             throw new \Exception('No items found', 404);
