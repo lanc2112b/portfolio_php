@@ -18,8 +18,18 @@ class ViewJSON
 
         $http_origin = '';
 
-        if (in_array($_SERVER['HTTP_ORIGIN'], $allowed_hosts)) {
-            $http_origin = $_SERVER['HTTP_ORIGIN'];
+        // move into authenticated!
+        if(!array_key_exists('HTTP_ORIGIN', $_SERVER)){
+            $response = 'Forbidden';
+            $status = 403;
+        } else {
+
+            if (in_array($_SERVER['HTTP_ORIGIN'], $allowed_hosts)) {
+                $http_origin = $_SERVER['HTTP_ORIGIN'];
+            } else {
+                $response = 'Forbidden';
+                $status = 403;
+            }
         }
 
         header_remove();
