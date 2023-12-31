@@ -39,6 +39,7 @@ class ViewJSON
         header('Access-Control-Allow-Credentials: true');
         header('Content-Type: application/json');
         if (!empty($cookie)) {
+            $sameSiteVal = $_ENV['APP_ENV'] === 'production' ? 'Strict' : 'None';
             setcookie(
                 "jwt",
                 $cookie['token'],
@@ -46,7 +47,7 @@ class ViewJSON
                     "expires" => $cookie['expiry'],
                     "httpOnly" => true,
                     "secure" => true,
-                    "samesite" => 'None',
+                    "samesite" => $sameSiteVal,
                 ]
             );
         }
