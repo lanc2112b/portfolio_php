@@ -1,0 +1,68 @@
+name: Build and Deploy
+run-name: ${{ gitea.actor }} Running build and deploy
+#on:
+#  pull_request:
+#    types: [closed]
+on: [push] 
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main repository code
+        uses: actions/checkout@v3
+      - run: echo "The ${{ gitea.repository }} repository has been cloned to the runner."
+      - name: List repo contents
+        run: |
+          ls -a ${{ gitea.workspace }}/
+      - name: Check out deploy script
+        uses: actions/checkout@v3
+        with:
+          repository: MuninnTech/deploy-scripts
+          token: ${{ secrets.DEPLO_ACCESS }}
+          path: ./deploy_temp
+          ref: 'main'
+      - run: echo "The ${{ gitea.repository }} repository has been cloned to the runner."
+      - name: List deploy_temp contents
+        run: |
+          ls -a ${{ gitea.workspace }}/deploy_temp
+      - name: Create staging key
+        run: |
+          mkdir ~/.ssh
+          touch ~/.ssh/id_staging
+          echo "$SFTP_KEY" >> ~/.ssh/id_staging
+          chmod 700 ~/.ssh
+          chmod 600 ~/.ssh/id_staging
+        env: 
+          SFTP_KEY: ${{ secrets.SFTP_KEY }}
+      - name: Create env file local
+        run: |
+          touch deploy_temp/.env.local
+          echo "SFTP_SERVER=$SFTP_SERVER" >> deploy_temp/.env.local
+          echo "SFTP_USER=$SFTP_USER" >> deploy_temp/.env.local
+          echo "SFTP_KEY_FILE=$SFTP_KEY_FILE" >> deploy_temp/.env.local
+          echo "SFTP_KEY_PASSPHRASE=$SFTP_KEY_PASSPHRASE" >> deploy_temp/.env.local
+          echo "SFTP_PORT=$SFTP_PORT" >> deploy_temp/.env.local
+          echo "SFTP_URL=$SFTP_URL" >> deploy_temp/.env.local
+          echo "LOCAL_PATH=$LOCAL_PATH" >> deploy_temp/.env.local
+          echo "DEPLOY_LIST=$DEPLOY_LIST" >> deploy_temp/.env.local
+          cat ${{ gitea.workspace }}/deploy_temp/.env.local          
+        env:
+          SFTP_SERVER: ${{ secrets.SFTP_SERVER }}
+          SFTP_USER: ${{ secrets.SFTP_USER }}
+          SFTP_KEY_FILE: ${{ secrets.SFTP_KEY_FILE }}
+          SFTP_KEY_PASSPHRASE: ${{ secrets.SFTP_KEY_PASSPHRASE }}
+          SFTP_PORT: ${{ secrets.SFTP_PORT }}
+          SFTP_URL: ${{ secrets.SFTP_URL }}
+          LOCAL_PATH: ${{ gitea.workspace }}
+          DEPLOY_LIST: ${{ gitea.workspace }}/${{ vars.DEPLOY_LIST }}
+      - name: Install packages
+        run: |
+          cd ${{ gitea.workspace }}/deploy_temp/
+          npm install
+          ls -a ${{ gitea.workspace }}/
+          ls -a ${{ gitea.workspace }}/deploy_temp
+      - name: Deploy files
+        run: |
+          cd ${{ gitea.workspace }}/deploy_temp/
+          node deploy.js
+      - run: echo "This job's status is ${{ gitea.status }}."
