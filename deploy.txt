@@ -3,4 +3,3 @@ Core/
 db/
 public/
 composer.json
-.htaccess
